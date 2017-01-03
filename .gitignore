@@ -1,3 +1,7 @@
 .class
 /bin
 .jar
+/.classpath
+/.DS_Store
+/.project
+/out.txt
