@@ -64,7 +64,7 @@ public static ArrayList<BoatEvents> BoatEventsArrayListClone = new ArrayList<Boa
 		return buttonName;
 	}
 
-	public boolean getState() {
+	public boolean isSailing() {
 		return currentlySailing;
 		
 	}

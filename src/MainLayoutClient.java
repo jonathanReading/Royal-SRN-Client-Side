@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -38,7 +39,7 @@ public class MainLayoutClient {
 	private Label lblElapsedSailingTime;
 	private Label lblSailingTimer;
 	public boolean FinishedRace = false;
-	static BoatRaceDetails boatRaceDetails;
+	public static BoatRaceDetails boatRaceDetails;
 	public  boolean car;
 	private boolean personalDetailsEntered = false;
 	private Button btnSubmitDetails;
@@ -47,22 +48,19 @@ public class MainLayoutClient {
 	private int hours;
 	private int minutes;
 	private int seconds;
-	private int TimerDifferenceInSeconds = 0;
 	private int MotorTimeInSeconds = 0;
 	private int SailTimeInSeconds = 0;
 	Timer timer = null;
-	private int NewUnknowntimerDifferenceInSeconds;
-	private boolean a;
-	private int time;
-	  
+
+
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		 boatRaceDetails= new BoatRaceDetails(0, 0, 0);
-		
+
+		boatRaceDetails= new BoatRaceDetails(0, 0, 0);
+
 		try {
 			MainLayoutClient window = new MainLayoutClient();
 			window.open();
@@ -92,12 +90,11 @@ public class MainLayoutClient {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setMinimumSize(new Point(521, 355));
+
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		shell.setSize(521, 355);
 		shell.setText("SWT Application");
 		shell.setLayout(new FormLayout());
-		
-		
 		final Button btnStartSailing = new Button(shell, SWT.NONE);
 		FormData fd_btnStartSailing = new FormData();
 		fd_btnStartSailing.left = new FormAttachment(0, 22);
@@ -116,10 +113,10 @@ public class MainLayoutClient {
 				String buttonName = boatRaceDetails.getButtonName();
 				btnStartSailing.setText(buttonName);
 			}
-			
+
 		});
 
-		
+
 		txtGpsLatitude = new Text(shell, SWT.BORDER);
 		fd_btnStartSailing.right = new FormAttachment(txtGpsLatitude, -38);
 		FormData fd_txtGpsLatitude = new FormData();
@@ -136,7 +133,7 @@ public class MainLayoutClient {
 			}
 		});
 		txtGpsLatitude.setText("GPS Latitude");
-		
+
 		txtGpsLongitude = new Text(shell, SWT.BORDER);
 		fd_txtGpsLatitude.right = new FormAttachment(100, -192);
 		FormData fd_txtGpsLongitude = new FormData();
@@ -153,7 +150,7 @@ public class MainLayoutClient {
 			}
 		});
 		txtGpsLongitude.setText("GPS Longitude");
-		
+
 		txtBoatID = new Text(shell, SWT.BORDER);
 		FormData fd_txtNearestBoatAhead = new FormData();
 		fd_txtNearestBoatAhead.right = new FormAttachment(100, -43);
@@ -166,9 +163,9 @@ public class MainLayoutClient {
 
 			}
 		});	
-		
+
 		txtBoatID.setText("Boat ID");
-		
+
 		txtRaceID = new Text(shell, SWT.BORDER);
 		fd_txtNearestBoatAhead.bottom = new FormAttachment(100, -246);
 		FormData fd_txtNearestBoatAstern = new FormData();
@@ -183,10 +180,10 @@ public class MainLayoutClient {
 
 			}
 		});
-		
-		
+
+
 		txtRaceID.setText("Race ID");
-		
+
 		btnFinishRace = new Button(shell, SWT.NONE);
 		btnFinishRace.setText("Finish Race");
 		FormData fd_btnFinishRace = new FormData();
@@ -201,7 +198,7 @@ public class MainLayoutClient {
 				finishRace();
 				btnStartSailing.setEnabled(false);
 				btnFinishRace.setEnabled(false);
-				
+
 			}
 		});
 
@@ -220,7 +217,7 @@ public class MainLayoutClient {
 			}
 
 		});	
-		
+
 		lblElapsedMotoringTime = new Label(shell, SWT.NONE);
 		FormData fd_lblElapsedMotoringTime = new FormData();
 		fd_lblElapsedMotoringTime.left = new FormAttachment(0, 22);
@@ -228,13 +225,13 @@ public class MainLayoutClient {
 		lblElapsedMotoringTime.setEnabled(personalDetailsEntered);
 		lblElapsedMotoringTime.setLayoutData(fd_lblElapsedMotoringTime);
 		lblElapsedMotoringTime.setText("Elapsed\nMotoring \nTime");
-		
+
 		lblMotoringTimer = new Label(shell, SWT.NONE);
 		FormData fd_lblMotoringTimer = new FormData();
 		lblMotoringTimer.setEnabled(personalDetailsEntered);
 		lblMotoringTimer.setLayoutData(fd_lblMotoringTimer);
 		lblMotoringTimer.setText(MotorTimeInHHMMSS);
-		
+
 		lblMotorTimeAllowence = new Label(shell, SWT.NONE);
 		fd_btnStartSailing.top = new FormAttachment(lblMotorTimeAllowence, 70);
 		FormData fd_lblMotorTimeAllowence = new FormData();
@@ -243,7 +240,7 @@ public class MainLayoutClient {
 		lblMotorTimeAllowence.setEnabled(personalDetailsEntered);
 		lblMotorTimeAllowence.setLayoutData(fd_lblMotorTimeAllowence);
 		lblMotorTimeAllowence.setText("Motor \nTime\nAllowance");
-		
+
 		lblMotorAllowanceTimer = new Label(shell, SWT.NONE);
 		fd_lblMotorTimeAllowence.right = new FormAttachment(lblMotorAllowanceTimer, -6);
 		FormData fd_lblMotorAllowanceTimer = new FormData();
@@ -252,7 +249,7 @@ public class MainLayoutClient {
 		lblMotorAllowanceTimer.setEnabled(personalDetailsEntered);
 		lblMotorAllowanceTimer.setLayoutData(fd_lblMotorAllowanceTimer);
 		lblMotorAllowanceTimer.setText("00:00:00");
-		
+
 		lblElapsedSailingTime = new Label(shell, SWT.NONE);
 		fd_lblElapsedMotoringTime.bottom = new FormAttachment(lblElapsedSailingTime, 0, SWT.BOTTOM);
 		fd_lblMotoringTimer.left = new FormAttachment(lblElapsedSailingTime, 6);
@@ -262,7 +259,7 @@ public class MainLayoutClient {
 		lblElapsedSailingTime.setEnabled(personalDetailsEntered);
 		lblElapsedSailingTime.setLayoutData(fd_lblElapsedSailingTime);
 		lblElapsedSailingTime.setText("Elapsed\nSailing\nTime");
-		
+
 		lblSailingTimer = new Label(shell, SWT.NONE);
 		fd_lblElapsedSailingTime.left = new FormAttachment(lblSailingTimer, 34);
 		fd_lblElapsedMotoringTime.right = new FormAttachment(lblSailingTimer, -6);
@@ -274,7 +271,7 @@ public class MainLayoutClient {
 		lblSailingTimer.setEnabled(personalDetailsEntered);
 		lblSailingTimer.setLayoutData(fd_lblSailingTimer);
 		lblSailingTimer.setText(SailTimeInHHMMSS);
-		
+
 		Label Seperator = new Label(shell, SWT.SEPARATOR | SWT.VERTICAL);
 		fd_lblMotorAllowanceTimer.right = new FormAttachment(Seperator, -183);
 		fd_lblMotoringTimer.right = new FormAttachment(Seperator, -25);
@@ -292,7 +289,7 @@ public class MainLayoutClient {
 		fd_btnAutofillCoordinates.top = new FormAttachment(btnFinishRace, 4, SWT.TOP);
 		btnAutofillCoordinates.setLayoutData(fd_btnAutofillCoordinates);
 		btnAutofillCoordinates.setText("Auto-Fill Coordinates");
-		
+
 		Label Separator = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
 		fd_Seperator.bottom = new FormAttachment(Separator);
 		fd_btnSubmitDetails.bottom = new FormAttachment(100, -170);
@@ -303,18 +300,18 @@ public class MainLayoutClient {
 		fd_Separator.left = new FormAttachment(0, 329);
 		Separator.setLayoutData(fd_Separator);
 		btnAutofillCoordinates.addSelectionListener(new SelectionAdapter() {
-		        @Override
-		        public void widgetSelected(SelectionEvent event) {
-		            Button btn = (Button) event.getSource();
-		            System.out.println(btn.getSelection());
-		        }
-		    });		
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				Button btn = (Button) event.getSource();
+				System.out.println(btn.getSelection());
+			}
+		});		
 	}
 	private void submitDetails() {
 
 		String RaceIn = txtRaceID.getText();
 		String BoatIn = txtBoatID.getText();
-		
+
 		SetRaceDetails(RaceIn);
 		SetBoatDetails(BoatIn);
 		writeDetails(RaceIn, BoatIn);
@@ -322,124 +319,130 @@ public class MainLayoutClient {
 		txtGpsLatitude.setEnabled(personalDetailsEntered);
 		txtGpsLongitude.setEnabled(personalDetailsEntered);
 		btnFinishRace.setEnabled(personalDetailsEntered);
-		
+
 		txtBoatID.setEnabled(false);
 		txtRaceID.setEnabled(false);
 
 	}	
 	private String SetRaceDetails(String RaceIn) {
-		
+
 		String raceID = new String(RaceIn);
 		return raceID;
 	}
 	private String SetBoatDetails(String BoatIn) {
-		
+
 		String boatID = new String(BoatIn);
 		return boatID;
 	}
-	
+
 	private void writeDetails(String raceID, String boatID){
-		
-	    PrintStream out = null;
-	    	   	
-			try {
-				out = new PrintStream("out.txt");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}			
-			((PrintStream) out).println("Race ID: "+ raceID);
-			((PrintStream) out).println("Boat ID: "+ boatID+"\n");
+
+		PrintStream out = null;
+
+		try {
+			out = new PrintStream("out.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}			
+		((PrintStream) out).println("Race ID: "+ raceID);
+		((PrintStream) out).println("Boat ID: "+ boatID+"\n");
 	}
 	private void WriteRecordsToFile(ArrayList<BoatEvents> BoatEventsArrayList){
 		int i = 0;
 		File out = new File("out.txt");
-		
+
 		while (i != (BoatEventsArrayList.size())){
-			
+
 			try{
-			    if(!out.exists()){
-			        out.createNewFile();
-			    }
+				if(!out.exists()){
+					out.createNewFile();
+				}
 
-			    FileWriter fileWriter = new FileWriter(out, true);
+				FileWriter fileWriter = new FileWriter(out, true);
 
-			    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			    bufferedWriter.write("RecordID: " + (i+1) + BoatEventsArrayList.get(i) + "\n\n");
-			    bufferedWriter.close();
+				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+				bufferedWriter.write("RecordID: " + (i+1) + BoatEventsArrayList.get(i) + "\n\n");
+				bufferedWriter.close();
 			} catch(IOException e) {
 			}
-			
+
 			i++;
 		}	
 	}
-	
-	
-	
+
+
+
 	private void finishRace() {
 		timer.cancel();
 		boatRaceDetails.modifyExistingBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
 		boatRaceDetails.GetCloneOfBoatEventsArrayList();
 		WriteRecordsToFile(BoatRaceDetails.BoatEventsArrayListClone);
 	}
-	
+
 	private void ChangeState() throws InterruptedException{
-
-	boatRaceDetails.handleBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
-	IncrementRelaventTimer();
-	while (a ==true){
-	getUnknownTimerDifferenceInSeconds();
-	DiscernSailingOrMotoring(NewUnknowntimerDifferenceInSeconds, MotorTimeInSeconds);
-	}
-	}
-
-	private void IncrementRelaventTimer() {
 		if (!(timer == null)){
-			
+			updateTimerLabels();
 			timer.cancel();
 		}
-		timer = new Timer();
-		System.out.println("logging New timer Created");
-		timer.schedule(new IncrementationofTimer(0), 0, 1*1000);  //subsequent rate	
-		time = getUnknownTimerDifferenceInSeconds();
-		DiscernSailingOrMotoring(time, MotorTimeInSeconds);
-	}	
-	
-	private void DiscernSailingOrMotoring(int unknownTimerDifferenceInSeconds, int MotorTimeInSeconds) {
-		
-			TimerDifferenceInSeconds = unknownTimerDifferenceInSeconds;
+		boatRaceDetails.handleBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
+		//	IncrementRelaventTimer();
+		//determine if we're sailing or motoring
+		if (boatRaceDetails.isSailing() == true){ //we are now sailing
+			// we need to increment SailTimeInSeconds
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
 
-		if (boatRaceDetails.currentlySailing == false){ //deciding whether you are motoring or sailing - Result: Motoring.
-			
-			MotorTimeInSeconds = MotorTimeInSeconds + TimerDifferenceInSeconds;
-			
-			System.out.println("motoring");
-			hours = MotorTimeInSeconds / 3600;
-			minutes = (MotorTimeInSeconds % 3600) / 60;
-			seconds = MotorTimeInSeconds % 60;
-			MotorTimeInHHMMSS = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-			lblMotoringTimer.setData(MotorTimeInHHMMSS);
-			
+				@Override
+				public void run() {
+					SailTimeInSeconds += 1;
 
-		}else{  //deciding whether you are motoring or sailing - Result: Sailing.
-			
-			SailTimeInSeconds = SailTimeInSeconds + TimerDifferenceInSeconds;
-			System.out.println("sailing");
+					//Solution found here:
+					// http://stackoverflow.com/questions/21774088/use-java-util-timer-in-swt
+
+					/*
+					 * Originally we were just calling updateTimerLabels(), but this doesn't work because the timer is a thread, and swt is another thread.
+					 * You cannot update an SWT component from another thread, so we have to do it aynchronoysly to avoid the
+					 * "org.eclipse.swt.SWTException: Invalid thread access" error.
+					 */
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							updateTimerLabels();
+						}
+					});
+
+					System.out.println("Sail time in seconds: " + SailTimeInSeconds); } 
+			}, 0, 1000);  //subsequent rate	
+
+		}else{ //we are now now motoring
+			// we need to increment MotorTimeInSeconds
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					MotorTimeInSeconds += 1;						
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							updateTimerLabels();
+						}
+					});					System.out.println("motor time in seconds: " + MotorTimeInSeconds);	} 
+			}, 0, 1000);  //subsequent rate	
+		}
+	}
+	public void updateTimerLabels(){
+
+		if (boatRaceDetails.isSailing() == true){
 			hours = SailTimeInSeconds / 3600;
 			minutes = (SailTimeInSeconds % 3600) / 60;
 			seconds = SailTimeInSeconds % 60;
 			SailTimeInHHMMSS = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-		}	
-		System.out.println(SailTimeInHHMMSS + MotorTimeInHHMMSS +" final for this record");
-	}
-	
-	public int getUnknownTimerDifferenceInSeconds() {
-		IncrementationofTimer a = new IncrementationofTimer(CalculateUnknowntimerDifferenceInSeconds());
-		a.getUnknownTimerDifferenceInSeconds();
-		return NewUnknowntimerDifferenceInSeconds;
-	}
-
-	private int CalculateUnknowntimerDifferenceInSeconds() {
-		// TODO Auto-generated method stub
-		return 0;
+			lblSailingTimer.setText(SailTimeInHHMMSS);
+		}else{
+			hours = MotorTimeInSeconds / 3600;
+			minutes = (MotorTimeInSeconds % 3600) / 60;
+			seconds = MotorTimeInSeconds % 60;
+			MotorTimeInHHMMSS = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+			lblMotoringTimer.setText(MotorTimeInHHMMSS);
+		}
 	}
 }
