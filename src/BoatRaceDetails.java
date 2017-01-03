@@ -27,10 +27,10 @@ public static ArrayList<BoatEvents> BoatEventsArrayListClone = new ArrayList<Boa
 
 	public void handleBoatEvent(String gpsLatitude, String gpsLongitude, LocalTime localDateTime) {
 		if(BoatEventsArrayList.size()!=0){
-			
-			modifyExistingBoatEvent(gpsLatitude, gpsLongitude, localDateTime);	
+			modifyExistingBoatEvent(gpsLatitude, gpsLongitude, localDateTime);
 		}	
 		addNewBoatEvent(gpsLatitude, gpsLongitude, localDateTime);
+		
 	}
 
 	void modifyExistingBoatEvent(String gpsLatitude, String gpsLongitude, LocalTime localTime) { 

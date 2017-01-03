@@ -10,7 +10,6 @@ import java.io.PrintStream;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -26,7 +25,6 @@ import org.eclipse.swt.layout.FormAttachment;
 
 public class MainLayoutClient {
 
-	private int IncrementedTime;
 	protected Shell shell;
 	private Text txtGpsLatitude;
 	private Text txtGpsLongitude;
@@ -44,15 +42,18 @@ public class MainLayoutClient {
 	public  boolean car;
 	private boolean personalDetailsEntered = false;
 	private Button btnSubmitDetails;
-	private int TotalSailTimeInSec;
-	private int TotalMotorTimeInSec;
-	private String SailTimeInHHMMSS;
-	private String MotorTimeInHHMMSS;
-	private int totalSecs;
-	private String timeString;
+	private String SailTimeInHHMMSS = "00:00:00";
+	private String MotorTimeInHHMMSS = "00:00:00";
 	private int hours;
 	private int minutes;
 	private int seconds;
+	private int TimerDifferenceInSeconds = 0;
+	private int MotorTimeInSeconds = 0;
+	private int SailTimeInSeconds = 0;
+	Timer timer = null;
+	private int NewUnknowntimerDifferenceInSeconds;
+	private boolean a;
+	private int time;
 	  
 	/**
 	 * Launch the application.
@@ -232,7 +233,7 @@ public class MainLayoutClient {
 		FormData fd_lblMotoringTimer = new FormData();
 		lblMotoringTimer.setEnabled(personalDetailsEntered);
 		lblMotoringTimer.setLayoutData(fd_lblMotoringTimer);
-		lblMotoringTimer.setText("MotorTimeInHHMMSS");
+		lblMotoringTimer.setText(MotorTimeInHHMMSS);
 		
 		lblMotorTimeAllowence = new Label(shell, SWT.NONE);
 		fd_btnStartSailing.top = new FormAttachment(lblMotorTimeAllowence, 70);
@@ -272,7 +273,7 @@ public class MainLayoutClient {
 		fd_lblSailingTimer.top = new FormAttachment(0, 49);
 		lblSailingTimer.setEnabled(personalDetailsEntered);
 		lblSailingTimer.setLayoutData(fd_lblSailingTimer);
-		lblSailingTimer.setText("SailTimeInHHMMSS");
+		lblSailingTimer.setText(SailTimeInHHMMSS);
 		
 		Label Seperator = new Label(shell, SWT.SEPARATOR | SWT.VERTICAL);
 		fd_lblMotorAllowanceTimer.right = new FormAttachment(Seperator, -183);
@@ -371,71 +372,74 @@ public class MainLayoutClient {
 			i++;
 		}	
 	}
+	
+	
+	
 	private void finishRace() {
+		timer.cancel();
 		boatRaceDetails.modifyExistingBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
 		boatRaceDetails.GetCloneOfBoatEventsArrayList();
 		WriteRecordsToFile(BoatRaceDetails.BoatEventsArrayListClone);
 	}
+	
 	private void ChangeState() throws InterruptedException{
 
 	boatRaceDetails.handleBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
-	//IncrementRelaventTimer();
+	IncrementRelaventTimer();
+	while (a ==true){
+	getUnknownTimerDifferenceInSeconds();
+	DiscernSailingOrMotoring(NewUnknowntimerDifferenceInSeconds, MotorTimeInSeconds);
 	}
-	public void ChangeTimers() throws InterruptedException{				
+	}
 
-		boolean StateOfEngine = true;
-		SwitchTimers(StateOfEngine);		
-	}
+	private void IncrementRelaventTimer() {
+		if (!(timer == null)){
+			
+			timer.cancel();
+		}
+		timer = new Timer();
+		System.out.println("logging New timer Created");
+		timer.schedule(new IncrementationofTimer(0), 0, 1*1000);  //subsequent rate	
+		time = getUnknownTimerDifferenceInSeconds();
+		DiscernSailingOrMotoring(time, MotorTimeInSeconds);
+	}	
 	
-	public void SwitchTimers(boolean stateOfEngine) throws InterruptedException{
+	private void DiscernSailingOrMotoring(int unknownTimerDifferenceInSeconds, int MotorTimeInSeconds) {
 		
-		if (stateOfEngine == true){
-			SailTime(stateOfEngine);
-		}else{
-			MotorTime(stateOfEngine);
-		}
+			TimerDifferenceInSeconds = unknownTimerDifferenceInSeconds;
+
+		if (boatRaceDetails.currentlySailing == false){ //deciding whether you are motoring or sailing - Result: Motoring.
+			
+			MotorTimeInSeconds = MotorTimeInSeconds + TimerDifferenceInSeconds;
+			
+			System.out.println("motoring");
+			hours = MotorTimeInSeconds / 3600;
+			minutes = (MotorTimeInSeconds % 3600) / 60;
+			seconds = MotorTimeInSeconds % 60;
+			MotorTimeInHHMMSS = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+			lblMotoringTimer.setData(MotorTimeInHHMMSS);
+			
+
+		}else{  //deciding whether you are motoring or sailing - Result: Sailing.
+			
+			SailTimeInSeconds = SailTimeInSeconds + TimerDifferenceInSeconds;
+			System.out.println("sailing");
+			hours = SailTimeInSeconds / 3600;
+			minutes = (SailTimeInSeconds % 3600) / 60;
+			seconds = SailTimeInSeconds % 60;
+			SailTimeInHHMMSS = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+		}	
+		System.out.println(SailTimeInHHMMSS + MotorTimeInHHMMSS +" final for this record");
 	}
 	
-	private void MotorTime(boolean stateOfEngine) throws InterruptedException {
-		Timer timer = new Timer();
-		if(stateOfEngine == false){
-			timer.schedule(incrementMotorTime(stateOfEngine), 1000);
-		}
-		System.out.println("timeString");
-
-			hours = totalSecs / 3600;
-			minutes = (totalSecs % 3600) / 60;
-			seconds = totalSecs % 60;
-
-			timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-			System.out.println(timeString);
-	}
-	
-	
-	private TimerTask incrementMotorTime(boolean stateOfEngine) throws InterruptedException{
-		totalSecs = TotalMotorTimeInSec + 1;
-		System.out.println("timeString");
-		return null;
+	public int getUnknownTimerDifferenceInSeconds() {
+		IncrementationofTimer a = new IncrementationofTimer(CalculateUnknowntimerDifferenceInSeconds());
+		a.getUnknownTimerDifferenceInSeconds();
+		return NewUnknowntimerDifferenceInSeconds;
 	}
 
-	public void SailTime(boolean stateOfEngine) throws InterruptedException{
-		Timer timer = new Timer();
-		while(stateOfEngine == true){
-			timer.schedule(incrementSailTime(stateOfEngine), 1000);
-		}				
-			System.out.println("timeString");
-			hours = totalSecs / 3600;
-			minutes = (totalSecs % 3600) / 60;
-			seconds = totalSecs % 60;
-			timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-			System.out.println(timeString);
-
-		}
-	
-	private TimerTask incrementSailTime(boolean stateOfEngine) throws InterruptedException{
-		totalSecs = TotalMotorTimeInSec + 1;
-		System.out.println("timeString");
-		SailTime(stateOfEngine);
-		return null;
+	private int CalculateUnknowntimerDifferenceInSeconds() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

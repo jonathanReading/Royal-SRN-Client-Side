@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class BoatEvents {
+public class BoatEvents implements Serializable{
 	private String GpsLatStart;
 	private String GpsLongStart;
 	private String GpsLatEnd;
