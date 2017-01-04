@@ -81,7 +81,7 @@ public class MainLayoutClient {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-		}
+		} 
 	}
 
 	/**
