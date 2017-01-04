@@ -6,7 +6,7 @@ public class IncrementationofTimer extends TimerTask {
         
         public void run() {
       
-        		System.out.println("timeString");
+        		//System.out.println("timeString");
         		UnknownTimerDifferenceInSeconds = UnknownTimerDifferenceInSeconds +1;
         }
 

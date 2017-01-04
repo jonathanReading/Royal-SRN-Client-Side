@@ -37,7 +37,7 @@ public static ArrayList<BoatEvents> BoatEventsArrayListClone = new ArrayList<Boa
 		BoatEvents currentEvent = BoatEventsArrayList.get(BoatEventsArrayList.size()-1);
 		
 		currentEvent.AddEndEvents(gpsLatitude, gpsLongitude, localTime, currentlySailing, RecordState);
-		System.out.println(currentEvent.toString());
+		//system.out.println(currentEvent.toString());
 		changeEngineState();
 	}
 

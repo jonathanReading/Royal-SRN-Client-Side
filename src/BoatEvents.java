@@ -31,7 +31,6 @@ public class BoatEvents implements Serializable{
 
 	public String toString() {
 
-		//IncrementRecord();
 		return "Record State: " + recordState +"  RecordDuration: "+ RecordDuration
 		+ "\n [GpsLatStart=" + GpsLatStart + ", GpsLongStart=" + GpsLongStart + ", GpsLatEnd=" + GpsLatEnd + ", GpsLongEnd=" + GpsLongEnd + ", TimeStart=" + TimeStart + ", TimeEnd=" + TimeEnd + "]\n";
 	}
