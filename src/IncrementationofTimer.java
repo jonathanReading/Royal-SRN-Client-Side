@@ -1,21 +1,21 @@
 import java.util.TimerTask;
 
 public class IncrementationofTimer extends TimerTask {
-	
-		public int UnknownTimerDifferenceInSeconds;
-        
-        @Override
-		public void run() {
-      
-        		//System.out.println("timeString");
-        		UnknownTimerDifferenceInSeconds = UnknownTimerDifferenceInSeconds +1;
-        }
 
-		public IncrementationofTimer(int i) {
-		}
+	public int UnknownTimerDifferenceInSeconds;
 
-		public int getUnknownTimerDifferenceInSeconds() {
-			return UnknownTimerDifferenceInSeconds;
-		}
-		
+	@Override
+	public void run() {
+
+		//System.out.println("timeString");
+		UnknownTimerDifferenceInSeconds = UnknownTimerDifferenceInSeconds +1;
+	}
+
+	public IncrementationofTimer(int i) {
+	}
+
+	public int getUnknownTimerDifferenceInSeconds() {
+		return UnknownTimerDifferenceInSeconds;
+	}
+
 }

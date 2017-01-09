@@ -87,6 +87,11 @@ public class MainLayoutClient {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
+		/* 		Code generated using SWT to GUI tools.
+		 *		It has been kept as simple as possible to provide as user friendly experience as possible
+		 *		without compromising functionality or security. There are constraints on what can and cannot
+		 *		be done in order to prevent erroneous data in the output file. 
+		 */
 		shell = new Shell();
 		shell.setMinimumSize(new Point(521, 355));
 
@@ -328,7 +333,7 @@ public class MainLayoutClient {
 		txtGpsLatitude.setEnabled(personalDetailsEntered);
 		txtGpsLongitude.setEnabled(personalDetailsEntered);
 		btnFinishRace.setEnabled(personalDetailsEntered);
-		
+
 		txtBoatID.setEnabled(false);
 		txtRaceID.setEnabled(false);
 
@@ -347,7 +352,7 @@ public class MainLayoutClient {
 		PrintStream out = null;
 		String desktop = System.getProperty ("user.home") + "/Desktop/";
 		try {
-			out = new PrintStream(desktop +"out.txt");
+			out = new PrintStream(desktop +"Royal Southen Results");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}			
@@ -356,12 +361,10 @@ public class MainLayoutClient {
 	}
 	private void WriteRecordsToFile(ArrayList<BoatEvents> BoatEventsArrayList){
 		int i = 0;
-		//if (System.getProperty("os.name") != "Mac OS X"){
-		//}else{	
-		//	}
+
 		String desktop = System.getProperty ("user.home") + "/Desktop/";
 
-		File out = new File(desktop + "out.txt");
+		File out = new File(desktop + "Royal Southen Results");
 
 		while (i != (BoatEventsArrayList.size())){
 
@@ -380,6 +383,7 @@ public class MainLayoutClient {
 
 			i++;
 		}	
+    	out.setReadOnly();
 	}
 	private void finishRace() {
 		timer.cancel();
@@ -406,7 +410,6 @@ public class MainLayoutClient {
 
 					//Solution found here:
 					// http://stackoverflow.com/questions/21774088/use-java-util-timer-in-swt
-
 					/*
 					 * Originally we were just calling updateTimerLabels(), but this doesn't work because the timer is a thread, and swt is another thread.
 					 * You cannot update an SWT component from another thread, so we have to do it aynchronoysly to avoid the
@@ -418,11 +421,9 @@ public class MainLayoutClient {
 						}
 					});
 
-					//System.out.println("Sail time in seconds: " + SailTimeInSeconds); } 
-				}}, 0, 1000);  //subsequent rate	
+				}}, 0, 1000);	
 
-		}else{ //we are now now motoring
-			// we need to increment MotorTimeInSeconds
+		}else{
 			timer = new Timer();
 			timer.schedule(new TimerTask() {
 
@@ -433,8 +434,8 @@ public class MainLayoutClient {
 						public void run() {
 							updateTimerLabels();
 						}
-					});					//System.out.println("motor time in seconds: " + MotorTimeInSeconds);	} 
-				}}, 0, 1000);  //subsequent rate	
+					});	
+				}}, 0, 1000);
 		}
 	}
 	public void updateTimerLabels(){
