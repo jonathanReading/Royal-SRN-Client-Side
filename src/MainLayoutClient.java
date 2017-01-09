@@ -60,7 +60,6 @@ public class MainLayoutClient {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 		boatRaceDetails= new BoatRaceDetails(0, 0, 0);
 
 		try {
@@ -346,9 +345,9 @@ public class MainLayoutClient {
 	}	private void writeDetails(String raceID, String boatID){
 
 		PrintStream out = null;
-
+		String desktop = System.getProperty ("user.home") + "/Desktop/";
 		try {
-			out = new PrintStream("out.txt");
+			out = new PrintStream(desktop +"out.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}			
@@ -357,7 +356,12 @@ public class MainLayoutClient {
 	}
 	private void WriteRecordsToFile(ArrayList<BoatEvents> BoatEventsArrayList){
 		int i = 0;
-		File out = new File("out.txt");
+		//if (System.getProperty("os.name") != "Mac OS X"){
+		//}else{	
+		//	}
+		String desktop = System.getProperty ("user.home") + "/Desktop/";
+
+		File out = new File(desktop + "out.txt");
 
 		while (i != (BoatEventsArrayList.size())){
 

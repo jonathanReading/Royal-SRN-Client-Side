@@ -47,7 +47,6 @@ public class BoatEvents implements Serializable{
 		return recordID;
 	}
 	public String recordDuration(){
-		System.out.println("tracking");
         int l1Hour = this.TimeStart.getHour();
         int l2Hour = this.TimeEnd.getHour();
         int l1Minute = this.TimeStart.getMinute();
@@ -71,7 +70,7 @@ public class BoatEvents implements Serializable{
         	l2Hour = l2Hour -1;
         	minutes = minutes + 60;
         }
-        hours = l2Hour- l1Hour;        
+        hours = l2Hour- l1Hour;      
 		RecordDuration = String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, nanos);
 
         
