@@ -363,7 +363,6 @@ public class MainLayoutClient {
 		int i = 0;
 
 		String desktop = System.getProperty ("user.home") + "/Desktop/";
-
 		File out = new File(desktop + "Royal Southen Results");
 
 		while (i != (BoatEventsArrayList.size())){
@@ -374,7 +373,6 @@ public class MainLayoutClient {
 				}
 
 				FileWriter fileWriter = new FileWriter(out, true);
-
 				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 				bufferedWriter.write("RecordID: " + (i+1) + BoatEventsArrayList.get(i) + "\n\n");
 				bufferedWriter.close();
@@ -383,7 +381,6 @@ public class MainLayoutClient {
 
 			i++;
 		}	
-    	out.setReadOnly();
 	}
 	private void finishRace() {
 		timer.cancel();

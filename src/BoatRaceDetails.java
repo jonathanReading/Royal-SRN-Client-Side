@@ -1,7 +1,9 @@
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class BoatRaceDetails {
+@SuppressWarnings("serial")
+public class BoatRaceDetails implements Serializable {
 	//private	boolean SpinnakerUsed;
 	@SuppressWarnings("unused")
 	private	int ElapsedMotorTime;
