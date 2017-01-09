@@ -1,6 +1,3 @@
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,12 +14,15 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class MainLayoutClient {
 
@@ -314,8 +314,6 @@ public class MainLayoutClient {
 		btnAutofillCoordinates.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				Button btn = (Button) event.getSource();
-				//System.out.println(btn.getSelection());
 			}
 		});		
 	}
@@ -354,8 +352,8 @@ public class MainLayoutClient {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}			
-		((PrintStream) out).println("Race ID: "+ raceID);
-		((PrintStream) out).println("Boat ID: "+ boatID+"\n");
+		out.println("Race ID: "+ raceID);
+		out.println("Boat ID: "+ boatID+"\n");
 	}
 	private void WriteRecordsToFile(ArrayList<BoatEvents> BoatEventsArrayList){
 		int i = 0;
