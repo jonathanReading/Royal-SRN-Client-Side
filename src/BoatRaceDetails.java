@@ -73,10 +73,7 @@ public static ArrayList<BoatEvents> BoatEventsArrayListClone = new ArrayList<Boa
 		this.buttonName = buttonName;
 	}	
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<BoatEvents> GetCloneOfBoatEventsArrayList(){
-		
-		BoatEventsArrayListClone = (ArrayList<BoatEvents>)BoatEventsArrayList.clone();
-		    return BoatEventsArrayListClone;				
+	public ArrayList<BoatEvents> GetBoatEventsArrayList(){
+		    return BoatEventsArrayList;				
 	}
 }

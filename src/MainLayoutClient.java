@@ -12,8 +12,6 @@ import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -87,10 +85,12 @@ public class MainLayoutClient {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		/* 		Code generated using SWT to GUI tools.
+		
+		/* 		
+		 * 		Code generated using SWT to GUI tools.
 		 *		It has been kept as simple as possible to provide as user friendly experience as possible
-		 *		without compromising functionality or security. There are constraints on what can and cannot
-		 *		be done in order to prevent erroneous data in the output file. 
+		 *		without compromising functionality or security. There are limitations on what can and cannot
+		 *		be done by the user in order to prevent erroneous data in the output file. 
 		 */
 		shell = new Shell();
 		shell.setMinimumSize(new Point(521, 355));
@@ -107,6 +107,14 @@ public class MainLayoutClient {
 		btnStartSailing.setLayoutData(fd_btnStartSailing);
 		btnStartSailing.setText("Start Race");
 		btnStartSailing.addMouseListener(new MouseAdapter(){
+		/*		
+		 * 		Code enclosed in braces following ".addMouseListener" adds usability that gives the user the ability to interact with the 
+		 * 		programme, rather than having a purely computerised system which does not allow the user to have control over what happens,
+		 * 		meaning that the programme would not fulfil its success criteria.
+		 * 
+		 * 		This Button calls the change state function, and changes the text displayed on the button. 
+		 * 		This means that you only need one button for motoring and sailing, rather than one each.
+		 */		
 			@Override
 			public void mouseDown(MouseEvent e) {
 				try {
@@ -131,6 +139,10 @@ public class MainLayoutClient {
 		txtGpsLatitude.setEnabled(personalDetailsEntered);
 		txtGpsLatitude.setLayoutData(fd_txtGpsLatitude);
 		txtGpsLatitude.addMouseListener(new MouseAdapter() {
+			/*
+			 *		this Mouse down listener adds aesthetic to the system, which clears the contents of the text box when clicked.
+			 *		this allows me to have an indicator as to what to put in the textbox, and adds general useability.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				txtGpsLatitude.setText("");
@@ -148,6 +160,10 @@ public class MainLayoutClient {
 		txtGpsLongitude.setEnabled(personalDetailsEntered);
 		txtGpsLongitude.setLayoutData(fd_txtGpsLongitude);
 		txtGpsLongitude.addMouseListener(new MouseAdapter() {
+			/*
+			 *		this Mouse down listener adds aesthetic to the system, which clears the contents of the text box when clicked.
+			 *		this allows me to have an indicator as to what to put in the textbox, and adds general useability.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				txtGpsLongitude.setText("");
@@ -162,6 +178,10 @@ public class MainLayoutClient {
 		txtBoatID.setEnabled(!personalDetailsEntered);
 		txtBoatID.setLayoutData(fd_txtNearestBoatAhead);
 		txtBoatID.addMouseListener(new MouseAdapter() {
+			/*
+			 *		this Mouse down listener adds aesthetic to the system, which clears the contents of the text box when clicked.
+			 *		this allows me to have an indicator as to what to put in the textbox, and adds general useability.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				txtBoatID.setText("");
@@ -179,6 +199,10 @@ public class MainLayoutClient {
 		txtRaceID.setEnabled(!personalDetailsEntered);
 		txtRaceID.setLayoutData(fd_txtNearestBoatAstern);
 		txtRaceID.addMouseListener(new MouseAdapter() {
+			/*
+			 *		this Mouse down listener adds aesthetic to the system, which clears the contents of the text box when clicked.
+			 *		this allows me to have an indicator as to what to put in the textbox, and adds general useability.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				txtRaceID.setText("");
@@ -198,6 +222,10 @@ public class MainLayoutClient {
 		btnFinishRace.setEnabled(personalDetailsEntered);
 		btnFinishRace.setLayoutData(fd_btnFinishRace);
 		btnFinishRace.addMouseListener(new MouseAdapter() {
+			/*
+			 *		This mouse down event calls the finish race function when the finish race button is pressed.
+			 *		This disables all of the GUI and closes the previous record, meaning that no more records can be made or edited.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				finishRace();
@@ -214,6 +242,12 @@ public class MainLayoutClient {
 		btnSubmitDetails.setLayoutData(fd_btnSubmitDetails);
 		btnSubmitDetails.setText("Submit Details");
 		btnSubmitDetails.addMouseListener(new MouseAdapter(){
+			/*
+			 *		this Mouse down listener allows the user to start the race by enabling the start sailing button.
+			 *		This is necessary as the boat and race details need to be at the top of the file before any other records.
+			 *		This  because of the way that the Admin application manipulates the data.
+			 *		The submitDetails function is also called which writes the contents of the boatID and raceID Text boxes to the output file.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				personalDetailsEntered = true;
@@ -295,14 +329,17 @@ public class MainLayoutClient {
 		btnAutofillCoordinates.setLayoutData(fd_btnAutofillCoordinates);
 		btnAutofillCoordinates.setText("Auto-Fill Coordinates");
 		btnAutofillCoordinates.addMouseListener(new MouseAdapter() {
+			/*
+			 *		When the "Auto-fill coordinates" button is pressed the GPS Longitude and GPS Latitude text boxes are disabled
+			 *		to make way for the GPS device to fill in automatically. This would require an API of sorts, and will not always be
+			 *		possible, hence the option to do so. To simulate the auto-Filling of coordinates, I have created a library of GPS
+			 *		Coordinates that will be read in at random with each record.
+			 */
 			@Override
 			public void mouseDown(MouseEvent e) {
 				btnAutofillCoordinates.setEnabled(false);			
 				txtGpsLatitude.setEnabled(false);
-				//System.out.println("Autofilling Coordinates");
 				txtGpsLongitude.setEnabled(false);
-
-
 			}
 		});
 
@@ -314,60 +351,62 @@ public class MainLayoutClient {
 		fd_Separator.bottom = new FormAttachment(btnSubmitDetails, 8, SWT.BOTTOM);
 		fd_Separator.right = new FormAttachment(100, -9);
 		fd_Separator.left = new FormAttachment(0, 329);
-		Separator.setLayoutData(fd_Separator);
-		btnAutofillCoordinates.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-			}
-		});		
+		Separator.setLayoutData(fd_Separator);	
 	}
+	
+	
 	private void submitDetails() {
 
-		String RaceIn = txtRaceID.getText();
-		String BoatIn = txtBoatID.getText();
+		String RaceIn = txtRaceID.getText(); //Get the value stored in RaceID
+		String BoatIn = txtBoatID.getText(); //Get the value stored in BoatID
 
-		SetRaceDetails(RaceIn);
+		SetRaceDetails(RaceIn); 
 		SetBoatDetails(BoatIn);
 		writeDetails(RaceIn, BoatIn);
-		btnSubmitDetails.setEnabled(false);
-		txtGpsLatitude.setEnabled(personalDetailsEntered);
-		txtGpsLongitude.setEnabled(personalDetailsEntered);
-		btnFinishRace.setEnabled(personalDetailsEntered);
+		btnSubmitDetails.setEnabled(false); 				//Disables the Submit Details Button - stops user from inputting duplicate entries.
+		txtGpsLatitude.setEnabled(personalDetailsEntered);	//Enables the fields to allow text input.
+		txtGpsLongitude.setEnabled(personalDetailsEntered);	//Enables the fields to allow text input.
+		btnFinishRace.setEnabled(personalDetailsEntered);	//Enables the button to allow submission of the button contents.
 
-		txtBoatID.setEnabled(false);
-		txtRaceID.setEnabled(false);
+		txtBoatID.setEnabled(false); //Disables the text field - stops user from inputting duplicate entries.
+		txtRaceID.setEnabled(false); //Disables the text field - stops user from inputting duplicate entries.
 
 	}	
+	//Setter for Race Details: RaceID
 	private String SetRaceDetails(String RaceIn) {
 
 		String raceID = new String(RaceIn);
 		return raceID;
 	}
+	//Setter for Boat Details: BoatID
 	private String SetBoatDetails(String BoatIn) {
 
 		String boatID = new String(BoatIn);
 		return boatID;
+		
+		
 	}	private void writeDetails(String raceID, String boatID){
 
 		PrintStream out = null;
-		String desktop = System.getProperty ("user.home") + "/Desktop/";
+		String desktop = System.getProperty ("user.home") + "/Desktop/"; //Determines desktop and sets file path to desktop variable
 		try {
-			out = new PrintStream(desktop +"Royal Southen Results");
+			out = new PrintStream(desktop +"Royal Southen Results"); //writes the print stream to the file path in the file "Royal Southern Results".
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace(); //Error exception file not found.
 		}			
 		out.println("Race ID: "+ raceID);
 		out.println("Boat ID: "+ boatID+"\n");
 	}
+	
+	
 	private void WriteRecordsToFile(ArrayList<BoatEvents> BoatEventsArrayList){
 		int i = 0;
+		String desktop = System.getProperty ("user.home") + "/Desktop/"; //Determines desktop and sets file path to desktop variable
+		File out = new File(desktop + "Royal Southen Results"); // Determines file to save records in.
 
-		String desktop = System.getProperty ("user.home") + "/Desktop/";
-		File out = new File(desktop + "Royal Southen Results");
+		while (i != (BoatEventsArrayList.size())){ //loops for all records in list.
 
-		while (i != (BoatEventsArrayList.size())){
-
-			try{
+			try{ //Checks that file still exists.
 				if(!out.exists()){
 					out.createNewFile();
 				}
@@ -382,28 +421,30 @@ public class MainLayoutClient {
 			i++;
 		}	
 	}
+	
 	private void finishRace() {
-		timer.cancel();
-		boatRaceDetails.modifyExistingBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
-		boatRaceDetails.GetCloneOfBoatEventsArrayList();
-		WriteRecordsToFile(BoatRaceDetails.BoatEventsArrayListClone);
+		timer.cancel(); //cancels running timer.
+		boatRaceDetails.modifyExistingBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now()); 
+		//^^^ fills in missing section of the existing incomplete boat event 
+		boatRaceDetails.GetBoatEventsArrayList(); // gets the new non-static list of boat events
+		WriteRecordsToFile(BoatRaceDetails.BoatEventsArrayListClone); //passes the list to the method WriteRecordsToFile
 	}
+	
 	private void ChangeState() throws InterruptedException{
-		if (!(timer == null)){
-			updateTimerLabels();
-			timer.cancel();
-		}
-		boatRaceDetails.handleBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now());
-		//	IncrementRelaventTimer();
-		//determine if we're sailing or motoring
-		if (boatRaceDetails.isSailing() == true){ //we are now sailing
-			// we need to increment SailTimeInSeconds
-			timer = new Timer();
+		if (!(timer == null)){ //checks whether a timer is running
+			updateTimerLabels(); // calls the updateTimerLabels method which updates the times
+			timer.cancel(); //Cancels the timer
+		} 
+		
+		boatRaceDetails.handleBoatEvent(txtGpsLatitude.getText(), txtGpsLongitude.getText(), LocalTime.now()); 
+		// ^^^creates new boat event and fills in the previous one
+		if (boatRaceDetails.isSailing() == true){
+			timer = new Timer(); //creates new timer
 			timer.schedule(new TimerTask() {
 
 				@Override
 				public void run() {
-					SailTimeInSeconds += 1;
+					SailTimeInSeconds += 1; //increments the number of seconds the timer label has to display
 
 					//Solution found here:
 					// http://stackoverflow.com/questions/21774088/use-java-util-timer-in-swt
@@ -414,11 +455,11 @@ public class MainLayoutClient {
 					 */
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
-							updateTimerLabels();
+							updateTimerLabels(); //updates timers every second
 						}
 					});
 
-				}}, 0, 1000);	
+				}}, 0, 1000);	//initial delay in millisec (0), subsequent delays in millisec, (1000)
 
 		}else{
 			timer = new Timer();
@@ -432,9 +473,10 @@ public class MainLayoutClient {
 							updateTimerLabels();
 						}
 					});	
-				}}, 0, 1000);
+				}}, 0, 1000);	//initial delay in millisec (0), subsequent delays in millisec, (1000)
 		}
 	}
+	
 	public void updateTimerLabels(){
 		MotorAllowanceInSeconds = SailTimeInSeconds - MotorTimeInSeconds;
 		if(MotorAllowanceInSeconds <0){
